@@ -1,0 +1,9 @@
+[ha_proxy]
+ha1 ansible_host=
+
+[nfs_server]
+nfs1 ansible_host=
+
+[xlr_master]
+master1 ansible_host=
+master2 ansible_host=

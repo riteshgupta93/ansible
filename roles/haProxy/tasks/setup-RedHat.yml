@@ -1,0 +1,7 @@
+---
+- name: Install haproxy package
+  yum:
+    name: haproxy
+    state: present
+    update_cache: yes  
+
