@@ -5,14 +5,14 @@
   roles: 
     - haProxy
 
-- name: Setup NFS server
-  hosts: nfs_server
-  become: yes
-  roles:
-    - nfsServer
-
-- name: Setup XLR instance
-  hosts: xlr_master
-  become: yes
-  roles:
-    - xlRelease  
+      #- name: Setup NFS server
+      #  hosts: nfs_server
+      #  become: yes
+      #  roles:
+      #    - nfsServer
+      #
+      #- name: Setup XLR instance
+      #  hosts: xlr_master
+      #  become: yes
+      #  roles:
+      #    - xlRelease  
