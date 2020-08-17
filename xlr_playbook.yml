@@ -11,14 +11,21 @@
 #  roles:
 #    - nfsServer
     
-- name: Setup Nfs mount points
-  hosts: xlr_master
+#- name: Setup Nfs mount points
+#  hosts: xlr_master
+#  become: yes
+#  roles:
+#    - nfsClient
+#  vars:
+#    nfs_server_group: "nfs_server"
+
+- name: Setup postgres db
+  hosts: db
   become: yes
   roles:
-    - nfsClient
-  vars:
-    nfs_server_group: "nfs_server"
+    - postgres
 
+    
       #
       #- name: Setup XLR instance
       #  hosts: xlr_master
