@@ -1,0 +1,51 @@
+---
+- name: "Stop the server if already running"
+  systemd:
+    name: nfs-server
+    state: stopped
+
+- name: "Installing nfs package"
+  yum:
+    name: nfs-utils
+    state: present
+    update_cache: yes  
+    
+- name: "Starting other essential services related to nfs-server"
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - rpcbind
+    - nfs-lock
+    - nfs-idmap
+    - nfs-server
+
+- name: "Creating export directory"
+  file:
+    path: "{{ export_path }}"
+    state: directory
+    mode: '0755'
+
+- name: "Updating /etc/exports file with shared directory access"
+  lineinfile:
+    path: /etc/exports
+    line: "{{ export_path }}    {{ hostvars[item].ansible_host }}(rw,sync,no_root_squash,no_all_squash)"
+    state: present
+  with_items: "{{ groups[mount_group] }}"
+
+- name: "Restarting nfs-server"
+  systemd:
+    name: nfs-server
+    state: restarted
+
+- name: "Setting up the firewall"
+  firewalld:
+    zone: public
+    service: "{{ item }}"
+    permanent: yes
+    state: enabled
+  with_items:
+    - nfs
+    - mountd
+    - rpc-bind      

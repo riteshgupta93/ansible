@@ -2,7 +2,7 @@
 ha1 ansible_host=192.168.0.107 backend_server_group=xlr_master
 
 [nfs_server]
-nfs1 ansible_host=192.168.0.107 export_path=/xlr_share mount_group=xlr_master
+nfs1 ansible_host=192.168.0.107 mount_group=xlr_master
 
 [postgres_db]
 db ansible_host=192.168.0.107 port=2532
