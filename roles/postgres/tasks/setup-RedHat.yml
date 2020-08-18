@@ -2,3 +2,30 @@
 - name: "Install docker"
   include_role:
     name: docker
+
+- name: "Copy db init script"
+  template:
+    src: xlr_init.sql.j2
+    dest: /tmp/postgres/xlr_init.sql
+    mode: 0655
+  when: "{{ config }}" == "xlr"
+
+- name: "Start postgres inside container"
+  docker_container:
+    name: postgres
+    image: postgres:10.5
+    state: started
+    restart: yes
+    ports:
+     - "5432:5432"
+    volumes:
+      - /tmp/xlr_init.sql:/docker-entrypoint-initdb.d/init-user-db.sh
+    env:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "demo"
+      
+- name: "Setting firewall for postgres port"
+  firewalld:
+    port: 5432/tcp
+    permanent: yes
+    state: enabled

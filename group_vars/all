@@ -2,3 +2,5 @@
 ansible_user: vagrant
 export_path: /xlr_share
 mount_path: /xlr_share
+xlr_zip: 
+xlr_license_file: 

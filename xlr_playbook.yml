@@ -24,6 +24,8 @@
   become: yes
   roles:
     - postgres
+  vars:
+    config: "xlr"
 
     
       #

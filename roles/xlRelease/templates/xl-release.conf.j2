@@ -1,0 +1,45 @@
+xl {
+  cluster {
+    # mode: "default", "hot-standby", "full"
+    mode = full
+    name = "xl-release_cluster"
+    akka {
+      loglevel = "INFO"
+      actor.debug.receive = off
+      remote {
+        log-received-messages = off
+        log-sent-messages = off
+      }
+    }
+              node {
+                clusterPort = 5531
+                hostname = "{{ hostvars[item].ansible_host }}"
+                id = "{{ hostvars[item].inventory_hostname }}"
+            }
+
+  }
+
+  database {
+    db-driver-classname="org.postgresql.Driver"
+    db-password="xl-release"
+    db-url="jdbc:postgresql://xlr-db-postgres:5432/xlrelease"
+    db-username=xl-release
+    max-pool-size=10
+  }
+
+
+  # TODO XLR does not support (H2) running in one schema.
+  reporting {
+    engine {
+         location="{{ mount_path }}"
+    }
+    db-driver-classname="org.postgresql.Driver"
+    db-password="xlarchive"
+    db-url="jdbc:postgresql://xlr-db-postgres:5432/xlarchive"
+    db-username=xlarchive
+  }
+
+  metrics {
+    enabled = false
+  }
+}

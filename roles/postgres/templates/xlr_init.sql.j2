@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+    CREATE USER xlrelease WITH
+  	NOSUPERUSER
+  	NOCREATEDB
+  	NOCREATEROLE
+  	ENCRYPTED PASSWORD 'xlrelease';
+    CREATE USER xlarchive WITH
+  	NOSUPERUSER
+  	NOCREATEDB
+  	NOCREATEROLE
+  	ENCRYPTED PASSWORD 'xlarchive';
+    
+    CREATE DATABASE xlrelease OWNER xlrelease;
+    CREATE DATABASE xlarchive OWNER xlarchive;
+EOSQL
