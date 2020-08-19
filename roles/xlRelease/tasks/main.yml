@@ -1,0 +1,38 @@
+---
+#- name: "Install required packages"
+#  yum:
+#    name: "{{ item }}"
+#    state: present
+#    update_cache: yes
+#  with_items:
+#    - java-11-openjdk-devel
+#    - unzip  
+#
+#- name: "Create server directory if it does not exist"
+#  file:
+#    path: /opt/xl-release-server
+#    state: directory
+#    mode: '0755'
+
+    #- name: "Copy XLR Zip"
+    #  unarchive:
+    #    src: "{{ xlr_zip }}"
+    #    dest: /opt/xl-release-server/
+    #
+    #- name: "copy conf files"
+    #  template:
+    #    src: "{{ item }}"
+    #    dest: /opt/xl-release-server/conf
+    #  with_items:
+    #    - xl-release.conf
+    #    - xl-release-server.conf
+    
+- name: "debug msg"
+  debug:
+    msg: "{{ hostvars[item] }}"
+
+    #- name: "Copy license file"
+    #copy:
+    #src: "{{ xlr_license_file }}"
+    #dest: /opt/xl-release-server/conf/xl-release.lic
+
