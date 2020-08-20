@@ -1,31 +1,31 @@
 ---
-#- name: Setup Load Balancer
-#  hosts: ha_proxy
-#  become: yes
-#  roles: 
-#    - haProxy
-#
-#- name: Setup NFS server
-#  hosts: nfs_server
-#  become: yes
-#  roles:
-#    - nfsServer
-#   
-#- name: Setup Nfs mount points
-#  hosts: xlr_master
-#  become: yes
-#  roles:
-#    - nfsClient
-#  vars:
-#    nfs_server_group: "nfs_server"
-#
-#- name: Setup postgres db
-#  hosts: db
-#  become: yes
-#  roles:
-#    - postgres
-#  vars:
-#    config: "xlr"
+- name: Setup Load Balancer
+  hosts: ha_proxy
+  become: yes
+  roles: 
+    - haProxy
+
+- name: Setup NFS server
+  hosts: nfs_server
+  become: yes
+  roles:
+    - nfsServer
+   
+- name: Setup Nfs mount points
+  hosts: xlr_master
+  become: yes
+  roles:
+    - nfsClient
+  vars:
+    nfs_server_group: "nfs_server"
+
+- name: Setup postgres db
+  hosts: db
+  become: yes
+  roles:
+    - postgres
+  vars:
+    config: "xlr"
 
 - name: Setup XLR instance
   serial: 1

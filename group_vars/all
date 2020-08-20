@@ -1,6 +1,12 @@
 ---
 ansible_user: vagrant
+#ansible_password: 
+#ansible_ssh_private_key_file: 
+
 export_path: /xlr_share
+
 mount_path: /xlr_share
-xlr_zip: /home/ritesh/Downloads/xl-release-9.7.2-server.zip 
-xlr_license_file: /home/ritesh/xl/xl_files
+
+xlr_zip: /path_to_xlr.zip
+
+xlr_license_file: /path_to_license_file

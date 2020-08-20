@@ -1,49 +1,48 @@
 ---
-#- name: "Install required packages"
-#  yum:
-#    name: "{{ item }}"
-#    state: present
-#    update_cache: yes
-#  with_items:
-#    - java-11-openjdk-devel
-#    - unzip  
-#
-#- name: "Copy XLR Zip"
-#  unarchive:
-#    src: "{{ xlr_zip }}"
-#    dest: /opt/
-#
-#- name: "moving zip to xl-release-server"
-#  shell: mv /opt/xl-release-* /opt/xl-release-server    
-#
-#- name: "copy conf files"
-#  template:
-#    src: "{{ item }}"
-#    dest: /opt/xl-release-server/conf/
-#  with_items:
-#    - xl-release.conf
-#    - xl-release-server.conf
-#    
-#- name: "Download postgres jdbc jar"
-#  get_url:
-#    url: https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
-#    dest: /opt/xl-release-server/lib/
-#    mode: '0440'
-#
-#- name: Create a directory if it does not exist
-#  file:
-#    path: /opt/xl-release-server/
-#    state: directory
-#    mode: '0755'
-#    recurse: yes
-#    owner: "{{ ansible_user }}"
-#
-#- name: "Copy license file"
-#  copy:
-#    src: "{{ xlr_license_file }}"
-#    dest: /opt/xl-release-server/conf/xl-release.lic
-#    mode: 0664
-#    owner: "{{ ansible_user }}"
+- name: "Install required packages"
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - java-11-openjdk-devel
+    - unzip  
+
+- name: "Copy XLR Zip"
+  unarchive:
+    src: "{{ xlr_zip }}"
+    dest: /opt/
+
+- name: "moving zip to xl-release-server"
+  shell: mv /opt/xl-release-* /opt/xl-release-server    
+
+- name: "copy conf files"
+  template:
+    src: "{{ item }}"
+    dest: /opt/xl-release-server/conf/
+  with_items:
+    - xl-release.conf
+    - xl-release-server.conf
+    
+- name: "Download postgres jdbc jar"
+  get_url:
+    url: https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
+    dest: /opt/xl-release-server/lib/
+    mode: '0440'
+
+- name: Create a directory if it does not exist
+  file:
+    path: /opt/xl-release-server/
+    state: directory
+    mode: '0755'
+    recurse: yes
+    owner: "{{ ansible_user }}"
+
+- name: "Copy license file"
+  copy:
+    src: "{{ xlr_license_file }}"
+    dest: /opt/xl-release-server/conf/xl-release-license.lic
+    mode: 0644
 
 - name: "Copy systemd services"
   template:
@@ -53,6 +52,12 @@
 - name: "Start server"
   command: systemctl start xlr
 
+- name: "Setting firewall for xlr port"
+  firewalld:
+    port: 5516/tcp
+    permanent: yes
+    state: enabled
+  
 - name: "wait for server to come up"
   wait_for:
     port: 5516

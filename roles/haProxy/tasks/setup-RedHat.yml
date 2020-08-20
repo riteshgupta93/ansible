@@ -18,6 +18,9 @@
     state: present
   with_items: "{{ groups[backend_server_group] }}"
 
+- name: "update selinux for haproxy"
+  shell: setsebool -P haproxy_connect_any=1  
+  
 - name: "Starting Haproxy Server"
   systemd:
     name: haproxy
