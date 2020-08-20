@@ -1,7 +1,41 @@
 ---
-- include_tasks: setup-RedHat.yml
-  when: ansible_os_family == 'RedHat'
+- name: "Install docker"
+  include_role:
+    name: docker
 
-- include_tasks: setup-Debian.yml
-  when: ansible_os_family == 'Debian'
+- name: "Copy db init script"
+  template:
+    src: xlr_init.sql.j2
+    dest: /tmp/xlr_init.sql
+    mode: 0655
 
+- name: "Installing ansible dependency for docker"
+  shell: |
+    curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+    python get-pip.py
+    pip install docker-py  
+    
+- name: "Start postgres inside container"
+  docker_container:
+    name: postgres
+    image: postgres:10.5
+    state: started
+    restart: yes
+    ports:
+     - "5432:5432"
+    volumes:
+      - /tmp/xlr_init.sql:/docker-entrypoint-initdb.d/init-user-db.sh
+    env:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "demo"
+      
+- name: "Setting firewall for postgres port"
+  firewalld:
+    port: 5432/tcp
+    permanent: yes
+    state: enabled
+
+- name: "Wait for db to come up"
+  wait_for:
+    port: 5432
+    delay: 10  

@@ -1,0 +1,8 @@
+[Unit]
+Description=xlr service
+
+[Service]
+ExecStart=/opt/xl-release-server/bin/run.sh
+
+[Install]
+WantedBy=multi-user.target

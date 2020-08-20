@@ -8,31 +8,52 @@
 #    - java-11-openjdk-devel
 #    - unzip  
 #
-#- name: "Create server directory if it does not exist"
+#- name: "Copy XLR Zip"
+#  unarchive:
+#    src: "{{ xlr_zip }}"
+#    dest: /opt/
+#
+#- name: "moving zip to xl-release-server"
+#  shell: mv /opt/xl-release-* /opt/xl-release-server    
+#
+#- name: "copy conf files"
+#  template:
+#    src: "{{ item }}"
+#    dest: /opt/xl-release-server/conf/
+#  with_items:
+#    - xl-release.conf
+#    - xl-release-server.conf
+#    
+#- name: "Download postgres jdbc jar"
+#  get_url:
+#    url: https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
+#    dest: /opt/xl-release-server/lib/
+#    mode: '0440'
+#
+#- name: Create a directory if it does not exist
 #  file:
-#    path: /opt/xl-release-server
+#    path: /opt/xl-release-server/
 #    state: directory
 #    mode: '0755'
+#    recurse: yes
+#    owner: "{{ ansible_user }}"
+#
+#- name: "Copy license file"
+#  copy:
+#    src: "{{ xlr_license_file }}"
+#    dest: /opt/xl-release-server/conf/xl-release.lic
+#    mode: 0664
+#    owner: "{{ ansible_user }}"
 
-    #- name: "Copy XLR Zip"
-    #  unarchive:
-    #    src: "{{ xlr_zip }}"
-    #    dest: /opt/xl-release-server/
-    #
-    #- name: "copy conf files"
-    #  template:
-    #    src: "{{ item }}"
-    #    dest: /opt/xl-release-server/conf
-    #  with_items:
-    #    - xl-release.conf
-    #    - xl-release-server.conf
-    
-- name: "debug msg"
-  debug:
-    msg: "{{ hostvars[item] }}"
+- name: "Copy systemd services"
+  template:
+    src: xlr.service
+    dest: /etc/systemd/system/xlr.service
 
-    #- name: "Copy license file"
-    #copy:
-    #src: "{{ xlr_license_file }}"
-    #dest: /opt/xl-release-server/conf/xl-release.lic
+- name: "Start server"
+  command: systemctl start xlr
 
+- name: "wait for server to come up"
+  wait_for:
+    port: 5516
+    delay: 30

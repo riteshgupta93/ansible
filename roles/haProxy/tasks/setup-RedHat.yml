@@ -1,10 +1,5 @@
 ---
-- name: "Stop the server if already running"
-  systemd:
-    name: haproxy
-    state: stopped
-
-- name: Install haproxy package
+- name: "Install haproxy package"
   yum:
     name: haproxy
     state: present
