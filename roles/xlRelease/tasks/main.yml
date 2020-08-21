@@ -18,11 +18,8 @@
 
 - name: "copy conf files"
   template:
-    src: "{{ item }}"
+    src: xl-release.conf
     dest: /opt/xl-release-server/conf/
-  with_items:
-    - xl-release.conf
-    - xl-release-server.conf
     
 - name: "Download postgres jdbc jar"
   get_url:
@@ -30,7 +27,7 @@
     dest: /opt/xl-release-server/lib/
     mode: '0440'
 
-- name: Create a directory if it does not exist
+- name: "Setting directory permissions"
   file:
     path: /opt/xl-release-server/
     state: directory
@@ -38,6 +35,18 @@
     recurse: yes
     owner: "{{ ansible_user }}"
 
+- name: "Copy xl-release-server.conf"
+  copy:
+    src: "{{ xlr_server_conf_file }}"
+    dest: /opt/xl-release-server/conf/xl-release-server.conf
+    mode: 0644
+
+- name: "copy keystore file"
+  copy:
+    src: "{{ xlr_keystore_file }}"
+    dest: /opt/xl-release-server/conf/repository-keystore.jceks
+    mode: 0644
+    
 - name: "Copy license file"
   copy:
     src: "{{ xlr_license_file }}"

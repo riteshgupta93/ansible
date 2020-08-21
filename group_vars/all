@@ -10,3 +10,7 @@ mount_path: /xlr_share
 xlr_zip: /path_to_xlr.zip
 
 xlr_license_file: /path_to_license_file
+
+xlr_server_conf_file: /path_to_xl-release-server.conf
+
+xlr_keystore_file: /path_to_repository_keystore.jceks
