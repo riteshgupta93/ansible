@@ -1,0 +1,27 @@
+---
+- name: "Install nfs-utils package"
+  yum:
+    name: nfs-utils
+    state: present
+    update_cache: yes  
+    
+- name: "Creating mount directory"
+  file:
+    path: "{{ mount_path }}"
+    state: directory
+    mode: '0755'
+
+- name: "Updating /etc/fstab file for permanently mounting the mount directory"
+  lineinfile:
+    path: /etc/fstab
+    line: "{{ hostvars[item].ansible_host }}:{{ export_path }}    {{ mount_path }}   nfs defaults 0 0"
+    state: present
+  with_items: "{{ groups[nfs_server_group] }}"
+
+- name: "Mounting the mountpoint on client"
+  command: "mount {{ mount_path }}"
+  ignore_errors: True
+  register: result
+  args:
+    warn: no
+    

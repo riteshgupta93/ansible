@@ -1,0 +1,28 @@
+---
+- name: Setup Load Balancer
+  hosts: ha_proxy
+  become: yes
+  roles: 
+    - haProxy
+
+- name: Setup NFS server
+  hosts: nfs_server
+  become: yes
+  roles:
+    - nfsServer
+   
+- name: Setup Nfs mount points
+  hosts: app_server
+  become: yes
+  roles:
+    - nfsClient
+  vars:
+    nfs_server_group: "nfs_server"
+
+- name: Setup postgres db
+  hosts: db
+  become: yes
+  roles:
+    - postgres
+  vars:
+    config: "app"

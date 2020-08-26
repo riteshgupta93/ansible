@@ -1,0 +1,28 @@
+---
+- name: "Install haproxy package"
+  yum:
+    name: haproxy
+    state: present
+    update_cache: yes  
+    
+- name: "Copying config file haproxy.cfg"
+  template:
+     src: haproxy.cfg
+     dest: /etc/haproxy/
+     mode: 0644
+
+- name: "Updating haproxy config file"
+  lineinfile:
+    path: /etc/haproxy/haproxy.cfg
+    line: "    server {{ hostvars[item].inventory_hostname }} {{ hostvars[item].ansible_host }}:{{ hostvars[item].port }} check"
+    state: present
+  with_items: "{{ groups[backend_server_group] }}"
+
+- name: "update selinux for haproxy"
+  shell: setsebool -P haproxy_connect_any=1  
+  
+- name: "Starting Haproxy Server"
+  systemd:
+    name: haproxy
+    state: started
+    enabled: yes
