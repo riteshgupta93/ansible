@@ -1,0 +1,17 @@
+$TTL 86400
+@   IN  SOA     masterdns.rits.local. root.rits.local. (
+        2020082501  ;Serial
+        3600        ;Refresh
+        1800        ;Retry
+        604800      ;Expire
+        86400       ;Minimum TTL
+)
+@       IN  NS          masterdns.rits.local.
+@       IN  A           192.168.0.107
+@       IN  A           192.168.0.108
+@       IN  A           192.168.0.109
+masterdns       IN  A   192.168.0.107
+two    IN  A   192.168.0.108
+three          IN  A   192.168.0.109
+*.two       IN  CNAME       two
+*.three       IN  CNAME       three

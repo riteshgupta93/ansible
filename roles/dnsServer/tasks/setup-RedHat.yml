@@ -1,0 +1,51 @@
+---
+- name: "Installing dns server packages"
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - bind
+    - bind-utils  
+
+- name: "Copying named.conf"
+  template:
+     src: named.conf.j2
+     dest: /etc/named.conf
+     mode: 0644
+
+- name: "Copying dns forward entry config"
+  template:
+     src: forward.rits.local.j2
+     dest: /var/named/forward.rits.local
+     mode: 0644
+
+- name: "Copying dns reverse entry config"
+  template:
+     src: reverse.rits.local.j2
+     dest: /var/named/reverse.rits.local
+     mode: 0644
+
+- name: "update network config"
+  lineinfile:
+    path: /etc/sysconfig/network-scripts/ifcfg-eth1
+    line: DNS=192.168.0.107  
+
+- name: "updating resolv.conf"
+  lineinfile:
+    path: /etc/resolv.conf
+    line: nameserver 192.168.0.107
+    insertafter: '^search '
+
+- name: "Disabling networkmanager"
+  systemd:
+    name: NetworkManager
+    state: stopped  
+
+- name: "Restarting named and network services"
+  systemd:
+    name: "{{item}}"
+    state: restarted
+  with_items:
+    - named  
+    - network
+
