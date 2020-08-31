@@ -26,3 +26,11 @@
     - postgres
   vars:
     config: "app"
+
+- name: Setup DNS server
+  hosts: dns
+  become: yes
+  roles:
+    - dnsServer  
+  tags: 
+    - dns    

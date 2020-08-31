@@ -10,3 +10,6 @@ db ansible_host=192.168.0.107 port=2532
 [app_server]
 master1 ansible_host=192.168.0.108 port=80
 master2 ansible_host=192.168.0.109 port=80
+
+[dns]
+masterdns ansible_host=192.168.0.107

@@ -41,6 +41,15 @@
     name: NetworkManager
     state: stopped  
 
+- name: "opening ports"    
+  firewalld:
+    port: "53/{{item}}"
+    permanent: yes
+    state: enabled
+  with_items:
+    - tcp
+    - udp  
+
 - name: "Restarting named and network services"
   systemd:
     name: "{{item}}"
