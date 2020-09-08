@@ -28,12 +28,12 @@
 - name: "update network config"
   lineinfile:
     path: /etc/sysconfig/network-scripts/ifcfg-eth1
-    line: DNS=192.168.0.107  
+    line: "DNS={{ansible_host}}"
 
 - name: "updating resolv.conf"
   lineinfile:
     path: /etc/resolv.conf
-    line: nameserver 192.168.0.107
+    line: "nameserver {{ansible_host}}"
     insertafter: '^search '
 
 - name: "Disabling networkmanager"

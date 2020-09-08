@@ -1,15 +1,15 @@
 [ha_proxy]
-ha1 ansible_host=192.168.0.107 backend_server_group=app_server
+ha1 ansible_host=192.168.0.102 backend_server_group=app_server
 
 [nfs_server]
-nfs1 ansible_host=192.168.0.107 mount_group=app_server
+nfs1 ansible_host=192.168.0.102 mount_group=app_server
 
 [postgres_db]
-db ansible_host=192.168.0.107 port=2532
+db ansible_host=192.168.0.102 port=2532
 
 [app_server]
-master1 ansible_host=192.168.0.108 port=80
-master2 ansible_host=192.168.0.109 port=80
+master1 ansible_host=192.168.0.104 port=80
+master2 ansible_host=192.168.0.105 port=80
 
 [dns]
-masterdns ansible_host=192.168.0.107
+masterdns ansible_host=192.168.0.102 IP_RANGE=192.168.0.0/24

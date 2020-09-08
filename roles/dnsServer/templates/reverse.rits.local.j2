@@ -8,9 +8,9 @@ $TTL 86400
 )
 @       IN  NS          masterdns.rits.local.
 @       IN  PTR         rits.local.
-masterdns       IN  A   192.168.0.107
-two    IN  A   192.168.0.108
-three          IN  A   192.168.0.109
-107     IN  PTR         masterdns.rits.local.
-108     IN  PTR         two.rits.local.
-109     IN  PTR         three.rits.local.
+masterdns       IN  A   {{ansible_host}}
+two    IN  A   192.168.0.104
+three          IN  A   192.168.0.105
+{{ansible_host.split('.')[-1]}}    IN  PTR         masterdns.rits.local.
+104     IN  PTR         two.rits.local.
+105     IN  PTR         three.rits.local.

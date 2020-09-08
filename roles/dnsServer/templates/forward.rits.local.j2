@@ -7,11 +7,11 @@ $TTL 86400
         86400       ;Minimum TTL
 )
 @       IN  NS          masterdns.rits.local.
-@       IN  A           192.168.0.107
-@       IN  A           192.168.0.108
-@       IN  A           192.168.0.109
-masterdns       IN  A   192.168.0.107
-two    IN  A   192.168.0.108
-three          IN  A   192.168.0.109
+@       IN  A           {{ansible_host}}
+@       IN  A           192.168.0.104
+@       IN  A           192.168.0.105
+masterdns       IN  A   {{ansible_host}}
+two    IN  A   192.168.0.104
+three          IN  A   192.168.0.105
 *.two       IN  CNAME       two
 *.three       IN  CNAME       three
