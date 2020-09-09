@@ -20,19 +20,19 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "first" do |first|
     first.vm.box = "centos/7"
-    first.vm.network "public_network", ip: "192.168.0.107"
+    first.vm.network "public_network", ip: "192.168.0.102", bridge: "wlp9s0"
     first.vm.provision "shell", inline: "echo First VM is up"
   end
 
   config.vm.define "second" do |second|
     second.vm.box = "centos/7"
-    second.vm.network "public_network", ip: "192.168.0.108"
+    second.vm.network "public_network", ip: "192.168.0.104", bridge: "wlp9s0"
     second.vm.provision "shell", inline: "echo Second VM is up"
   end
 
   config.vm.define "third" do |third|
      third.vm.box = "centos/7"
-     third.vm.network "public_network", ip: "192.168.0.109"
+     third.vm.network "public_network", ip: "192.168.0.105", bridge: "wlp9s0"
      third.vm.provision "shell", inline: "echo Third VM is up"
   end
 end

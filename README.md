@@ -2,6 +2,8 @@
 
 ### Vagrant
 
+`sudo apt install virtualbox vagrant`
+
 Use the vagrant/Vagrantfile for deployment of centos machines locally.
 
 command to run the vagrant environment
