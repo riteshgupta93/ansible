@@ -13,3 +13,9 @@ master2 ansible_host=192.168.0.105 port=80
 
 [dns]
 masterdns ansible_host=192.168.0.102 IP_RANGE=192.168.0.0/24
+
+[kube_master]
+master  ansible_ssh_host=192.168.0.102
+
+[kube_workers]
+node1  ansible_ssh_host=192.168.0.105

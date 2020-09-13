@@ -31,6 +31,25 @@
   hosts: dns
   become: yes
   roles:
-    - dnsServer  
-  tags: 
-    - dns    
+    - { role: dnsServer, tags: ["dns"] }
+  tags: ["dns"]
+  
+- name: "Setup kubernetes cluster : Master" 
+  hosts: kube_master
+  vars:
+    kubernetes_role: "master"
+  sudo: true
+  roles:
+    - docker
+    - kubernetes   
+  tags: [kube_master]
+
+- name: "Setup kubernetes cluster : Node"    
+  hosts: kube_workers
+  vars:
+    kubernetes_role: "node"
+  sudo: true
+  roles:
+    - docker
+    - kubernetes
+  tags: [kube_node]
